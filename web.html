@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Record Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 50%;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+          apiKey: "AIzaSyDTi2ewKUu_waLH_XMIYMfIAGx1KeOSe6w",
+          authDomain: "srma-bbdff.firebaseapp.com",
+          projectId: "srma-bbdff",
+          storageBucket: "srma-bbdff.firebasestorage.app",
+          messagingSenderId: "1022005982664",
+          appId: "1:1022005982664:web:7c1e3cde16068a334afcfd",
+          measurementId: "G-X9K8H143NH"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+      </script>
+    <div class="container">
+        <h2>Student Record Management</h2>
+        <input type="text" id="studentId" placeholder="Student ID">
+        <input type="text" id="studentName" placeholder="Student Name">
+        <input type="number" id="studentAge" placeholder="Age">
+        <input type="text" id="studentGrade" placeholder="Grade">
+        <button onclick="addStudent()">Add Student</button>
+        <input type="text" id="searchId" placeholder="Enter ID to Search">
+        <button onclick="searchStudent()">Search</button>
+        <button onclick="updateStudent()">Update</button>
+        <button onclick="deleteStudent()">Delete</button>
+        <h3>Student Records</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Grade</th>
+                </tr>
+            </thead>
+            <tbody id="studentTable"></tbody>
+        </table>
+    </div>
+
+    <script>
+        let students = {};
+        
+        function addStudent() {
+            let id = document.getElementById('studentId').value;
+            let name = document.getElementById('studentName').value;
+            let age = document.getElementById('studentAge').value;
+            let grade = document.getElementById('studentGrade').value;
+            
+            if (id && name && age && grade) {
+                students[id] = { name, age, grade };
+                displayStudents();
+            }
+        }
+
+        function displayStudents() {
+            let table = document.getElementById('studentTable');
+            table.innerHTML = '';
+            for (let id in students) {
+                let student = students[id];
+                table.innerHTML += `<tr><td>${id}</td><td>${student.name}</td><td>${student.age}</td><td>${student.grade}</td></tr>`;
+            }
+        }
+
+        function searchStudent() {
+            let id = document.getElementById('searchId').value;
+            if (students[id]) {
+                alert(`ID: ${id}\nName: ${students[id].name}\nAge: ${students[id].age}\nGrade: ${students[id].grade}`);
+            } else {
+                alert("Student not found!");
+            }
+        }
+
+        function updateStudent() {
+            let id = document.getElementById('searchId').value;
+            if (students[id]) {
+                students[id].name = document.getElementById('studentName').value;
+                students[id].age = document.getElementById('studentAge').value;
+                students[id].grade = document.getElementById('studentGrade').value;
+                displayStudents();
+            } else {
+                alert("Student not found!");
+            }
+        }
+
+        function deleteStudent() {
+            let id = document.getElementById('searchId').value;
+            if (students[id]) {
+                delete students[id];
+                displayStudents();
+            } else {
+                alert("Student not found!");
+            }
+        }
+    </script>
+
+</body>
+</html>
